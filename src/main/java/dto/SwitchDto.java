@@ -1,5 +1,8 @@
 package dto;
 
+import lombok.Data;
+
+@Data
 public class SwitchDto {
     private String sBrand;
     private String sName;

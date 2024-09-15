@@ -1,17 +1,59 @@
 plugins {
     id 'java'
+    id 'org.springframework.boot' version '3.1.2'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 }
 
 group 'org.example'
 version '1.0-SNAPSHOT'
+sourceCompatibility = '17'
 
 repositories {
     mavenCentral()
+//    maven { url 'https://repo.spring.io/milestone' }
+//    maven { url 'https://repo.spring.io/snapshot' }
 }
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.projectlombok:lombok:1.18.22'
+//    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    implementation 'mysql:mysql-connector-java:8.0.19'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+//    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+//    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.0'  // MyBatis Starter
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'  // Spring JDBC 필요 시
+
+    // Springfox Swagger Starter
+    implementation 'io.springfox:springfox-boot-starter:3.0.0'
+
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
+    // Authentication 클래스를 사용하려면 Spring Security가 프로젝트에 추가되어 있어야 합니다.
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
+    implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
+    implementation group: 'org.bgee.log4jdbc-log4j2', name: 'log4jdbc-log4j2-jdbc4.1', version: '1.16'
+
+    implementation 'com.h2database:h2'
+
+}
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+//    targetCompatibility = JavaVersion.VERSION_17s
 }
 
 test {

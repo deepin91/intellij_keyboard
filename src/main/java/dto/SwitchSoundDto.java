@@ -1,5 +1,8 @@
 package dto;
 
+import lombok.Data;
+
+@Data
 public class SwitchSoundDto {
     private int ssIdx;
     private String ssTitle; //db에 추가해야함

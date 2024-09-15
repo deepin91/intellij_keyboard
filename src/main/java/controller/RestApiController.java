@@ -1,5 +1,20 @@
 package controller;
 
+import dto.BoardCommentsDto;
+import dto.NoticeDto;
+import dto.SwitchSoundDto;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
+import mapper.KeyboardMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import service.KeyboardService;
+import java.util.Iterator;
+
 import java.io.*;
 import java.util.*;
 
@@ -17,19 +32,20 @@ public class RestApiController {
     public void getSwitchSound(@PathVariable("ssUUID") String ssUUID, HttpServletResponse response) throws Exception {
         FileInputStream fis = null;
         BufferedInputStream bis = null;
-        BufferedOutputStream = bos = null;
+        BufferedOutputStream bos = null;
+
         String UPLOAD_PATH = "C:\\Temp\\";
         System.out.println(">>>>>>>>>>>>>>>>>>>>    " + ssUUID);
         System.out.println("++++++++++++++++++++++" + response);
 
         try {
-            respinse.setHeader("Content-Disposition", "inline;");
+            response.setHeader("Content-Disposition", "inline;");
             byte[] buf = new byte[1024];
             fis = new FileInputStream(UPLOAD_PATH + ssUUID + ".mp3");
             bis = new BufferedInputStream(fis);
             bos = new BufferedOutputStream(response.getOutputStream());
             int read;
-            while ((read = bis.read(bud, 0, 1024)) != -1) {
+            while ((read = bis.read(buf, 0, 1024)) != -1) {
                 bos.write(buf, 0, read);
             }
         } finally {
@@ -56,7 +72,7 @@ public class RestApiController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return RescpinseEntity.ok(result);
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/api/IsDockerRun")
@@ -68,10 +84,10 @@ public class RestApiController {
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             List<String> list = reader.lines().toList();
 
-            Iterater<String> iterater = list.iterator();
-            while (iterater.hasNext()) {
+            Iterator<String> iterator = list.iterator();
+            while (iterator.hasNext()) {
                 String line = iterator.next();
-                if (line = contains("deepin3809/spleeter")) { // "deepin3809/spleeter" 이 부분에 맞게 도커 뭐 이름이든 경로든 설정해야함
+                if (line.contains("deepin3809/spleeter")) { // "deepin3809/spleeter" 이 부분에 맞게 도커 뭐 이름이든 경로든 설정해야함
                     isRunning = true;
                     break;
                 }
@@ -109,7 +125,7 @@ public class RestApiController {
         BufferedInputStream bis = null;
         BufferedOutputStream bos = null;
         String path = "C:\\keyboard_test\\" + ssUUID + "\\" + fn;
-        System.out.println(">>>>>>>>>>>>>>>>>>>>    " + musicUUID);
+        System.out.println(">>>>>>>>>>>>>>>>>>>>    " + ssUUID);
         System.out.println("111111111111111" + fn);
         System.out.println("++++++++++++++++++++++" + response);
         try {
@@ -133,7 +149,7 @@ public class RestApiController {
         String filePath = "C:\\keyboard_test\\" + ssUUID + "\\" + fileName;
         File file = new File(filePath);
         if (file.exists()) {
-            response.setContetType("application/octet-stream");
+            response.setContentType("application/octet-stream");
             response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
             try (FileInputStream inputStream = new FileInputStream(file);
                  ServletOutputStream outputStream = response.getOutputStream()) {
@@ -157,7 +173,7 @@ public class RestApiController {
                                                                     MultipartFile[] files) throws Exception {
         String UPLOAD_PATH = "C:\\keyboard_test\\";
         int insertedCount = 0;
-        String uuid = UUID.randomUUID.toString();
+        String uuid = UUID.randomUUID().toString();
         List<String> fileNames = new ArrayList<>();
         Map<String, Object> result = new HashMap<>();
 
@@ -172,19 +188,20 @@ public class RestApiController {
                     e.printStackTrace();
                 }
                 fileNames.add(originFileName);
+                int insertedConut = 0;
                 insertedConut++;
 
                 SwitchSoundDto switchSoundDto = new SwitchSoundDto();
                 switchSoundDto.setSsTitle(originFileName);
                 switchSoundDto.setSsUUID(uuid);
-                switchSoundDto.setSsIdx(ssIdx);
+//                switchSoundDto.setSsIdx(ssIdx);
                 keyboardService.insertSound(switchSoundDto);
             }
 
             if (insertedCount > 0) {
                 result.put("uuid", uuid);
                 result.put("fileNames", fileNames);
-                return ResponseEntity.status(HttpStatus.OK) body(result);
+                return ResponseEntity.status(HttpStatus.OK).body(result);
             } else {
                 result.put("message", "No files uploaded");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
@@ -192,7 +209,7 @@ public class RestApiController {
         } catch (Exception e) {
             e.printStackTrace();
             result.put("message", "파일 업로드 중 오류가 발생했습니다.");
-            return ResponseEntity.status(HttpStatus.INTENAL_SERVER_ERROR).body(result);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(result);
         }
     }
 
@@ -203,7 +220,7 @@ public class RestApiController {
         int insertedCount = 0;
         try {
             boardCommentsDto.setBcIdx(bIdx);
-            boardCommentsDto.getUserId(); //-> 이 부분 getUserId 가 아니라 UserNickname 으로 바꿔야할지도 체크체크!!!
+            boardCommentsDto.getUserNickname(); //-> 이 부분 getUserId 가 아니라 UserNickname 으로 바꿔야할지도 체크체크!!!
 
             insertedCount = keyboardService.insertBoardComments(boardCommentsDto);
             if (insertedCount > 0) {
@@ -219,7 +236,7 @@ public class RestApiController {
                 return ResponseEntity.status(HttpStatus.OK).body(result);
             }
         } catch (Exception e) {
-            e.printStachTrace();
+            e.printStackTrace();
             Map<String, Object> result = new HashMap<>();
             result.put("message", "등록 중 오류가 발생했습니다.");
             result.put("count", insertedCount);
@@ -275,7 +292,7 @@ public class RestApiController {
 
     //특정 공지 불러오기 - 여기 들어간 notice 부분 다 고쳐야 할 것 같음 + announcementDto 하나 만들고
     @GetMapping("/api/noticeDetail/{nIdx}")
-    public ResponseEntity<NotictDto> noticeDetail(@PathVariable("nIdx") int nIdx) throws Exception{
+    public ResponseEntity<NoticeDto> noticeDetail(@PathVariable("nIdx") int nIdx) throws Exception{
         NoticeDto noticeDto = keyboardService.noticeDetail(nIdx);
         if(noticeDto == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);

@@ -1,5 +1,8 @@
 package dto;
 
+import lombok.Data;
+
+@Data
 public class NoticeDto {
     private int nIdx;
     private String userNickname;
