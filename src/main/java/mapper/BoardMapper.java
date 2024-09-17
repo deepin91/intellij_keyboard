@@ -1,11 +1,13 @@
-package service;
+package mapper;
 
 import dto.BoardCommentsDto;
 import dto.BoardDto;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
-public interface BoardService {
+@Mapper
+public interface BoardMapper {
     int insertBoard(BoardDto boardDto);
     BoardDto boardDetail(int bIdx);
     List<BoardCommentsDto> boardCommentsList(int bIdx);

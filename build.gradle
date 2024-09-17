@@ -50,6 +50,7 @@ dependencies {
 
     implementation 'com.h2database:h2'
 
+    implementation 'jakarta.annotation:jakarta.annotation-api:2.0.0'
 }
 java {
     sourceCompatibility = JavaVersion.VERSION_17
@@ -58,4 +59,8 @@ java {
 
 test {
     useJUnitPlatform()
+}
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs << "-Xlint:deprecation" << "-Xlint:unchecked"
 }
