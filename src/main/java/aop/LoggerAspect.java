@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Slf4j
 public class LoggerAspect {
-    @Pointcut("execution(* keyboard..controller.*Controller.*(..)) || execution(* keyboard..service.*ServiceImpl.*(..)) || excution(* keyboard..mapper.*Mapper.*(..))")
+    @Pointcut("execution(* keyboard..controller.*Controller.*(..)) || execution(* keyboard..service.*ServiceImpl.*(..)) || execution(* keyboard..repository.*Repository.*(..))")
     private void loggerTarget() {
     }
 

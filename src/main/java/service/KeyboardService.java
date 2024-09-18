@@ -7,17 +7,17 @@ import dto.SwitchSoundDto;
 import java.util.List;
 
 public interface KeyboardService {
-    void insertSound(SwitchSoundDto switchSoundDto);
+    int insertSound(SwitchSoundDto switchSoundDto)throws Exception;
 
-    int insertBoardComments(BoardCommentsDto boardCommentsDto);
+    int insertBoardComments(BoardCommentsDto boardCommentsDto)throws Exception;
 
-    List<BoardCommentsDto> selectBoardCommentsList(int bIdx);
+    List<BoardCommentsDto> selectBoardCommentsList(int bIdx)throws Exception;
 
-    void updateBoardComments(BoardCommentsDto boardCommentsDto);
+    int updateBoardComments(BoardCommentsDto boardCommentsDto)throws Exception;
 
-    void deleteBoardComments(int bcIdx);
+    int deleteBoardComments(int bcIdx)throws Exception;
 
-    List<NoticeDto> noticeList();
+    List<NoticeDto> noticeList()throws Exception;
 
-    NoticeDto noticeDetail(int nIdx);
+    NoticeDto noticeDetail(int nIdx)throws Exception;
 }

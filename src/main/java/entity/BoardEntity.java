@@ -1,10 +1,12 @@
 package entity;
 
+
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "board")
 public class BoardEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,8 +21,20 @@ public class BoardEntity {
     private int bViews;
     @Column(nullable = false)
     private LocalDateTime bCreatedDt;
+    @Column(nullable = true) // 이미지가 없을 수 있으므로 nullable 설정
     private String bImg;
 
+
+    @PrePersist
+    protected void onCreate() {
+        this.bCreatedDt = LocalDateTime.now();
+        if (this.bViews == 0) {
+            this.bViews = 0;
+        }
+        if (this.bImg == null || this.bImg.isEmpty()) {
+            this.bImg = "default.jpg";
+        }
+    }
     // Getter & Setter methods
     public int getBIdx() {
         return bIdx;
@@ -62,13 +76,10 @@ public class BoardEntity {
         this.bViews = bViews;
     }
 
-    public LocalDateTime getBCreatedDt() {
-        return bCreatedDt;
-    }
 
-    public void setBCreatedDt(LocalDateTime bCreatedDt) {
-        this.bCreatedDt = bCreatedDt;
-    }
+//    public void setBCreatedDt(LocalDateTime bCreatedDt) {
+//        this.bCreatedDt = bCreatedDt;
+//    }
 
     public String getBImg() {
         return bImg;
@@ -76,5 +87,13 @@ public class BoardEntity {
 
     public void setBImg(String bImg) {
         this.bImg = bImg;
+    }
+
+    public LocalDateTime getBCreatedDt() {
+        return this.bCreatedDt;
+    }
+
+    public void setBCreatedDt(LocalDateTime bCreatedDtw) {
+        this.bCreatedDt = bCreatedDt;
     }
 }

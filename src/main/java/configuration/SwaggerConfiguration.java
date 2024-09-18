@@ -16,16 +16,24 @@ public class SwaggerConfiguration {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("noName"))
+                .apis(RequestHandlerSelectors.basePackage("controller"))
                 .paths(PathSelectors.any())
                 .build();
     }
 
-    private ApiInfo apiInfo(){
+//    private ApiInfo apiInfo(){
+//        return new ApiInfoBuilder()
+//                .title("Spring Boot Open API with Swagger")
+//                .description("noName REST API")
+//                .version("1.0.0") //<--버전 확인 및 수정 필요
+//                .build();
+//    }
+
+    private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("Spring Boot Open API with Swagger")
-                .description("noName REST API")
-                .version("1.0.0") //<--버전 확인 및 수정 필요
+                .title("Spring Boot Open API Documentation")
+                .description("API documentation for Example Project")
+                .version("1.0.0")  // 버전 정보 수정 가능
                 .build();
     }
 }

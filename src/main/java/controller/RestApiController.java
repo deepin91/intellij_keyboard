@@ -165,7 +165,7 @@ public class RestApiController {
         }
     }
 
-    @PostMapping("/api/insertSoundForSaving/{bIdx}")
+    @PostMapping("/api/insertSoundForSaving/{ssIdx}")
     public ResponseEntity<Map<String, Object>> insertSoundForSaving(@PathVariable("ssIdx")
 
                                                                     int bIdx, //여기 bIdx 맞는지 아닌지 확인해야함 bIdx가 아니라 ssIdx 일지도 모름 > 바꿈
@@ -265,6 +265,7 @@ public class RestApiController {
             keyboardService.updateBoardComments(boardCommentsDto);
             return ResponseEntity.status(HttpStatus.OK).body(1);
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(0);
         }
     }

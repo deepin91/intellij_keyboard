@@ -27,10 +27,15 @@ public class LoginServiceImpl implements  LoginService{
     }
 
     @Override
+    public int registerUser(UserDto userDto) throws Exception {
+        return 0;
+    }
+
+    @Override
     public int registUser(UserDto userDto) throws Exception {
         // 패스워드를 암호화해서 새로 저장
         userDto.setUserPassword(passwordEncoder.encode(userDto.getUserPassword()));
-        return loginMapper.registUser(userDto);
+        return loginMapper.registerUser(userDto);
     }
 
     @Override

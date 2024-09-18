@@ -11,8 +11,8 @@ public interface BoardMapper {
     int insertBoard(BoardDto boardDto);
     BoardDto boardDetail(int bIdx);
     List<BoardCommentsDto> boardCommentsList(int bIdx);
-    void updateViews(int bIdx);
-    void insertComments(BoardCommentsDto boardCommentsDto);
+    int  updateViews(int bIdx);
+    int  insertComments(BoardCommentsDto boardCommentsDto);
     List<BoardDto> boardList();
-    void updateBoard(BoardDto boardDto);
+    int  updateBoard(BoardDto boardDto);
 }
